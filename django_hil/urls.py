@@ -31,14 +31,15 @@ urlpatterns = [
     path('register/', users.views.register_page, name='register_page'),
     
     path('booking_page', booking.views.booking_page, name='booking_page'),
-    path('<int:booking_id>', booking.views.specific_booking, name='specific_booking'),
-    path('<int:booking_id>/accept/', booking.views.accept_booking, name='accept_booking'),
-    path('<int:booking_id>/cancel/', booking.views.cancel_booking, name='cancel_booking'),
+    path('booking/<int:booking_id>', booking.views.specific_booking, name='specific_booking'),
+    path('booking/<int:booking_id>/accept/', booking.views.accept_booking, name='accept_booking'),
+    path('booking/<int:booking_id>/cancel/', booking.views.cancel_booking, name='cancel_booking'),
     
     path('trainer_page', trainer.views.trainer_page, name='trainer_page'),
     path('trainer/<int:category_id>', trainer.views.category_page, name='category_page'),
-    path('<int:trainer_id>', trainer.views.specific_trainer, name='specific_trainer'),
-    path('<int:trainer_id>/accept/', trainer.views.trainer_service_booking, name='trainer_service_booking'),
-    path('<int:trainer_id>/service/', trainer.views.trainer_service, name='trainer_service_cancel'),    
+    path('trainer/<int:trainer_id>', trainer.views.specific_trainer, name='specific_trainer'),
+    path('trainer/<int:trainer_id>/accept/', trainer.views.trainer_service_booking, name='trainer_service_booking'),
+    path('trainer/<int:trainer_id>/service/', trainer.views.trainer_service, name='trainer_service_cancel'),
+    path('trainer_registratione/', trainer.views.trainer_registratione, name='trainer_registratione'),    
     
 ]

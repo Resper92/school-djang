@@ -2,18 +2,29 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
+        <title>Register</title>
     </head>
     <body>
+        <h2>Register</h2>
         <form action="/register/" method="post">
             {% csrf_token %}
-            Username : <input type="text" name="username">
-            Password : <input type="text" name="password">
-            First_name : <input type="text" name="first_name">
-            Last_name : <input type="text" name="last_name"> 
-            email : <input type="text" name="email">
-            <br>
-            <input type="submit">
+            
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required><br><br>
+
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" id="first_name" required><br><br>
+
+            <label for="last_name">Last Name:</label>
+            <input type="text" name="last_name" id="last_name" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required><br><br>
+
+            <input type="submit" value="Register">
         </form>
     </body>
 </html>
