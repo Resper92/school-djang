@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background: #222;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .trainer-info {
+            margin-bottom: 20px;
+        }
+
+        .trainer-info h2 {
+            margin-bottom: 10px;
+        }
+
+        .schedule-form {
+            margin-top: 20px;
+        }
+
+        .schedule-form label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        .schedule-form input, 
+        .schedule-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .schedule-form button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .schedule-form button:hover {
+            background: #0056b3;
+        }
+
+        .schedule-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .schedule-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Trainer Dashboard</h1>
+        <a href="/logout/" style="color: #fff;">Logout</a>
+    </header>
+
+    <main>
+        <!-- Trainer Info -->
+        <div class="trainer-info">
+            <h2>{{ trainer_model.first_name }} {{ trainer_model.last_name }}</h2>
+            <p>Email: {{ trainer_model.email }}</p>
+            <p>Bio: {{ trainer_data.bio }}</p>
+        </div>
+
+        <!-- Trainer Schedule -->
+        <div class="schedule-list">
+            <h3>Your Current Schedule</h3>
+            <ul>
+                {% for schedule in trainer_schedule %}
+                <li>{{ schedule.datatime_start }} - {{ schedule.datatime_end }}</li>
+                {% empty %}
+                <p>No schedule available.</p>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Schedule Form -->
+        <div class="schedule-form">
+            <h3>Set Weekly Schedule</h3>
+            <form method="POST" action="{% url 'specific_trainer' %}">
+                {% csrf_token %}
+                <label for="days">Select Days</label>
+                <select name="days" id="days" multiple>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+
+                <label for="start_time">Start Time</label>
+                <input type="time" name="start_time" id="start_time">
+
+                <label for="end_time">End Time</label>
+                <input type="time" name="end_time" id="end_time">
+
+                <button type="submit">Update Schedule</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

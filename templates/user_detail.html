@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dettagli Utente</title>
+</head>
+<body>
+    <h1>Dettagli Utente</h1>
+    <p><strong>Nome utente:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    
+    <!-- Se usi il modulo per modificare i dettagli -->
+    <h2>Modifica Dettagli Utente</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salva Modifiche</button>
+    </form>
+</body>
+</html>

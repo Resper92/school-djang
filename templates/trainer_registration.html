@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-        <form action="/trainer_registratione/" method="post">
-            {% csrf_token %}
-            Username : <input type="text" name="username">
-            Password : <input type="text" name="password">
-            First_name : <input type="text" name="first_name">
-            Last_name : <input type="text" name="last_name"> 
-            email : <input type="text" name="email">
-            <br>
-            <input type="submit">
-        </form>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Registration</title>
+</head>
+<body>
+    <h1>Register as Trainer</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit">Register</button>
+    </form>
+</body>
 </html>

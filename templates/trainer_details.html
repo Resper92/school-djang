@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+        }
+        header {
+            background: #222;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .service {
+            background-color: #eef;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ trainer_model.first_name }} {{ trainer_model.last_name }}</h1>
+    </header>
+    <main>
+        <section>
+            <h2>About</h2>
+            <p>{{ trainer_data.bio }}</p>
+        </section>
+        <section>
+            <h2>Weekly Schedule</h2>
+            <ul>
+                {% for schedule in trainer_schedule %}
+                <li>{{ schedule.datatime_start }} - {{ schedule.datatime_end }}</li>
+                {% empty %}
+                <p>No schedule available.</p>
+                {% endfor %}
+            </ul>
+        </section>
+        <section>
+            <h2>Services Offered</h2>
+            <ul>
+                {%for name in category%}
+                <h3>{{name.name}}</h3>
+                    {% for service in trainer_service %}
+                    <li class="service">
+                        <p>Duration: {{ service.duration }} minutes</p>
+                        <p>Price: ${{ service.price }}</p>
+                    </li>
+                    {% empty %}
+                    <p>No services available.</p>
+                    {% endfor %}
+                {%endfor%}
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

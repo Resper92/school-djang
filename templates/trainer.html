@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Trainer Page</title>
 </head>
 <body>
-    <h1>Trainer</h1>
+    <h1>Welcome, {{ trainer_model.first_name }} {{ trainer_model.last_name }}</h1>
+    <h2>Your Schedule:</h2>
+    <ul>
+        {{trainer_schedule}}
+    </ul>
 </body>
 </html>

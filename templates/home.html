@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - My Feet</title>
+    <style>
+        /* Stile generale */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+        }
+        .menu {
+            margin: 20px 0;
+        }
+        .menu a {
+            display: block;
+            margin: 10px 0;
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .menu a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Feet</h1>
+        <nav>
+            {% if user.is_authenticated %}
+                <a href="/user/{{ user.id }}/">Mio Profilo</a>
+                <a href="/logout/">Logout</a>
+            {% else %}
+                <a href="/register/">Registrazione</a>
+                <a href="/login/">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Benvenuto!</h2>
+        <p>Benvenuto nella nostra palestra virtuale! Usa il menu qui sotto per navigare:</p>
+        <div class="menu">
+            <a href="/trainer/">Vedi i Trainer</a>
+            <a href="/booking_page/">Vedi le Prenotazioni</a>
+            <a href="/trainer/registratione/">Registrati come Trainer</a>
+            <a href="/schedule/">Gestisci il tuo Orario</a>
+        </div>
+    </div>
+</body>
+</html>

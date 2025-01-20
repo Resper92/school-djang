@@ -13,6 +13,8 @@ class TraineSchedule(models.Model):
     datatime_start = models.DateTimeField()
     datatime_end = models.DateTimeField()
     trainer = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.trainer.username}: {self.datatime_start} - {self.datatime_end}"
     
 class Service(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

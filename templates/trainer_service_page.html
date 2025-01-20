@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Times - {{ specific_service.name }}</title>
+    <style>
+        /* Reset di base */
+        body, h1, h2, p, ul, li, form, label, input, button, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Stile generale */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        main {
+            margin-top: 20px;
+        }
+
+        /* Stile per la sezione degli orari disponibili */
+        .available-times {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .available-times ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .available-times li {
+            padding: 5px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .available-times li:last-child {
+            border-bottom: none;
+        }
+
+        /* Modulo di prenotazione */
+        .booking-form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .booking-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .booking-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .booking-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .booking-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Messaggi di errore */
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Link di ritorno */
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Orari disponibili per {{ specific_service.name }}</h1>
+    </header>
+
+    <main>
+        <!-- Mostra eventuali errori -->
+        {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Lista degli orari disponibili -->
+        <section class="available-times">
+            <h2>Orari disponibili</h2>
+            {% if available_times %}
+            <ul>
+                {% for time in available_times %}
+                <li>
+                    {{ time.0|date:"H:i" }} - {{ time.1|date:"H:i" }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Nessun orario disponibile per questo servizio.</p>
+            {% endif %}
+        </section>
+
+        <!-- Modulo di prenotazione -->
+        <section class="booking-form">
+            <h2>Prenota un orario</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="training-start">Seleziona l'orario di inizio:</label>
+                <input
+                    type="datetime-local"
+                    id="training-start"
+                    name="training-start"
+                    required
+                >
+                <button type="submit">Prenota</button>
+            </form>
+        </section>
+
+        <!-- Link di ritorno -->
+        <a href="/trainer/" class="back-link">Torna alla pagina del trainer</a>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Trainer Booking System</p>
+    </footer>
+</body>
+</html>
