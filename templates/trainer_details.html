@@ -72,11 +72,14 @@
                     <li class="service">
                         <p>Duration: {{ service.duration }} minutes</p>
                         <p>Price: ${{ service.price }}</p>
+                        <a href="/trainer/{{ service.trainer.id }}/{{ service.id }}">View service</a>
+
                     </li>
                     {% empty %}
                     <p>No services available.</p>
                     {% endfor %}
                 {%endfor%}
+                
             </ul>
         </section>
     </main>

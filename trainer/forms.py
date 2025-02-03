@@ -3,13 +3,18 @@ from trainer.models import Category, Service, TraineSchedule, TraineDescription
 from django.contrib.auth.models import User, Group
 
 # Form per gestire gli orari del trainer
+
+class TrainerDescriptionForm(forms.ModelForm):
+    class Meta:
+        model = TraineDescription
+        fields = ['text']
 class TrainerScheduleForm(forms.ModelForm):    
     class Meta:
         model = TraineSchedule
         fields = ['datatime_start', 'datatime_end', 'trainer']
         widgets = {
-            'datatime_start': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'datatime_end': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'datatime_start':forms.DateTimeInput (attrs={'type': 'datetime-local'}),
+            'datatime_end': forms.DateTimeInput (attrs={'type': 'datetime-local'}),
         }
 
 # Form per creare o modificare un trainer
@@ -52,7 +57,19 @@ class WeeklyWorkScheduleForm(forms.Form):
         label="End Time"
     )
 
-# Form per creare una categoria
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
+
+        if start_time and end_time:
+            if start_time >= end_time:
+                raise forms.ValidationError("The start time must be before the end time.")
+        
+        return cleaned_data
+
+
+
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
@@ -61,7 +78,24 @@ class CategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'placeholder': 'Category name'}),
         }
 
+
+
+
+class ServiceForm_01(forms.ModelForm):
+    LEVEL_CHOICES = [
+    (1, "Beginner"),
+    (2, "Intermediate"),
+    (3, "Advanced"),
+]
+    # Aggiungi il campo level con le opzioni di livello
+    level = forms.ChoiceField(choices=LEVEL_CHOICES, required=True, widget=forms.Select)
+
+    class Meta:
+        model = Service
+        fields = ['category', 'price', 'level', 'duration']
 # Form per creare o modificare un servizio
+
+
 class ServiceForm(forms.ModelForm):
     DURATION_CHOICES = [
         (30, '30 minutes'),

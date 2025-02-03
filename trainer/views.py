@@ -1,14 +1,17 @@
 import datetime
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User, Group
 import booking.models as booking_models
 import trainer.models 
 import trainer.utils
 from dateutil import parser
-from trainer.forms import   ServiceForm, TrainerScheduleForm,CategoryForm,WeeklyWorkScheduleForm,TrainerForm
+from trainer.forms import   ServiceForm, TrainerScheduleForm,CategoryForm,WeeklyWorkScheduleForm,TrainerForm,ServiceForm_01,TrainerDescriptionForm
 from trainer.models import TraineSchedule,TraineDescription,Category,Service
 import users.forms as user_forms
+
+
+
 def trainer_page(request):
     if request.method == "GET":
         # Controlla se l'utente è un trainer
@@ -71,16 +74,9 @@ def trainer_details(request, trainer_id):
     }
     return render(request, "trainer_details.html", context)
 
-def specific_trainer(request,):
-    form1 = trainer()
-    if request.method == "GET":
-        if Group.objects.filter(name="Trainer", user=request.user).exists():
-            trainer_model = User.objects.get(pk=request.user.pk)
-            trainer_data = TraineDescription.objects.filter(trainer=trainer_model).first()
-            trainer_schedule = form1
-            trainer_form = TrainerForm()
-            context = {"trainer_data": trainer_data, trainer_schedule : trainer_schedule, 'trainer_model': trainer_model}
-            return render(request, "specific_trainer.html", context)
+def specific_trainer(request):
+    form1 = TrainerForm()
+    schedule_form = WeeklyWorkScheduleForm()
 
     if request.method == "POST":
         if Group.objects.filter(name="Trainer", user=request.user).exists():
@@ -110,32 +106,29 @@ def specific_trainer(request,):
                         datatime_end=datatime_end
                     )
                 return redirect("specific_trainer")  # Torna alla pagina del trainer
+            else:
+                print("Form non valido:", schedule_form.errors)
 
     return render(request, "specific_trainer.html", {
-        "trainer_form": trainer_form,
-        "schedule_form": schedule_form,
-        "trainer_schedule": trainer_schedule,
-})
+        "trainer_form": form1,
+        "schedule_form": schedule_form
+    })
 
 # Servizi del Trainer
 def trainer_service(request):
-    if request.method == "GET":
-        if request.user.groups.filter(name="Trainer").exists():
-            return render(request, "trainer_service.html")
-        else:
-            form = ServiceForm()
-            return render(request, "trainer_service_form.html", {"form": form})
-    elif request.method == "POST":
-        form = ServiceForm(request.POST)
+    if request.method == 'POST':
+        form = ServiceForm_01(request.POST)
         if form.is_valid():
+            # Crea il servizio e associa il trainer loggato
             service = form.save(commit=False)
             service.trainer = request.user
             service.save()
-            return redirect("trainer_page",{"form": form})
-        else:
-            return render(request, "")
+            return redirect('trainer_service')  # Ricarica la pagina per vedere i nuovi servizi
+    else:
+        form = ServiceForm()
 
-# Pagina Servizio Trainer
+    return render(request, 'trainer_service.html', {'form': form})
+
 def trainer_service_page(request, trainer_id, service_id):
     current_trainer = User.objects.get(pk=trainer_id)
     specific_service = trainer.models.Service.objects.get(pk=service_id)
