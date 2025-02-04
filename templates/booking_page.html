@@ -89,7 +89,10 @@
                     <td>{{ booking_item.service }}</td>
                     <td>{{ booking_item.datetime_start }}</td>
                     <td>{{ booking_item.datetime_end }}</td>
-                </tr>
+                    
+                
+                    <td><a href="/booking/{{ booking_item.id }}">Specific Booking</a></td>
+            </tr>
                 {% endfor %}
             </tbody>
         </table>
