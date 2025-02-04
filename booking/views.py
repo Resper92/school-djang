@@ -10,7 +10,9 @@ def booking_page(request):
     
 
 def specific_booking(request):
-    return HttpResponse("Hello, world. You're at the users index.")
+    if request.method == "GET":
+        booking = Booking.objects.filter(user=request.user, id=request.GET.get("id")).first()
+        return render(request, "specific_booking.html", {"booking": booking})
 def accept_booking(request):
     
     return HttpResponse("Hello, world. You're at the users index.")
