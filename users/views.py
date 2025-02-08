@@ -43,7 +43,7 @@ def specific_user(request, user_id):
 
 def login_page(request):
     if request.method == 'GET':
-        form = loginForm
+        form = loginForm()
         return render(request, 'login.html', context={'form': form})
     if request.method == 'POST':
         form = loginForm(request.POST)
@@ -54,8 +54,8 @@ def login_page(request):
             if user is not None:
                 login(request, user)
                 return redirect("home_page")
-       
-    return redirect(request, 'login.html')
+        # Se le credenziali non sono corrette, rimanda alla stessa pagina di login
+        return redirect('login_page')
 
 
 def logout_page(request):
@@ -67,16 +67,15 @@ def logout_page(request):
 def register_page(request):
     if request.method == 'GET':
         form = registerForm()
-        return render(request, 'register.html', context={'form': form})
-    else:
-        form = registerForm(request.POST)
-        if form.is_valid():
-            created_user = form.save()  # This should work fine now
-            try:
-                client_group = Group.objects.get(name="user")
-            except Group.DoesNotExist:
-                client_group = Group.objects.create(name="user")
-            created_user.groups.add(client_group)
-            created_user.save()
-            return redirect('login_page')
+        return render(request, 'register.html', {'form': form})
 
+    form = registerForm(request.POST)
+    if form.is_valid():
+        created_user = form.save()
+        client_group, _ = Group.objects.get_or_create(name="user")
+        created_user.groups.add(client_group)
+        created_user.save()
+        return redirect('login_page')
+
+    # 🚨 Assicurati di restituire il form con errori
+    return render(request, 'register.html', {'form': form}, status=400)

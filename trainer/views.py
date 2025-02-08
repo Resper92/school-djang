@@ -144,7 +144,6 @@ def trainer_service_page(request, trainer_id, service_id):
             service_durations = {specific_service.id: specific_service.duration}  # Passa la durata del servizio
             available_times += trainer.utils.bookings_times_discovery(trainer_schedule, bookings_list, cur_date, service_durations)
             days_from_now += 1
-            print(bookings_list)
         return render(request,"trainer_service_page.html", {"specific_service": specific_service, "available_times": available_times})
     elif request.method == "POST":
         booking_start = parser.parse(request.POST.get("training-start"))
@@ -171,3 +170,6 @@ def trainer_registratione(request):
             create_trainer.groups.add(add_trainer_group)
             create_trainer.save()
             return redirect("login_page")
+        return render(request, "trainer_registration.html", {"form": form})  # ✅ Restituisce un HttpResponse anche se il form non è valido
+
+    return HttpResponse("Metodo non supportato", status=405)  # ✅ Evita un errore se arriva un metodo non gestito
